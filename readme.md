@@ -1,3 +1,32 @@
+# BlendLuxCore ML-HERO
+
+Experimental BlendLuxCore fork for ML-HERO spectral rendering and wavelength-dependent material research.
+
+## Current experimental features
+
+- ML-HERO wavelength sampling support
+- Sellmeier glass dispersion presets
+- RoughGlass Sellmeier support
+- HERO-aware spectral glass experiments
+- Tabulated spectral data experiments
+- Spectral volume absorption experiments
+
+## Planned research
+
+- Spectral Metal / Metal2 using wavelength-dependent n(λ) and k(λ)
+- Spectral Thin Film
+- Improved spectral volume handling
+- Generic Tabulated Spectrum workflow
+
+## Status
+
+Experimental and under active development.
+
+This repository is not intended as a drop-in replacement for the official BlendLuxCore release.
+Some features may be incomplete, renderer-specific, or subject to change.
+
+Base version: BlendLuxCore 2.11.0
+
 <p align="center">
 <h1 align="center">BlendLuxCore</h1>
 </p>
