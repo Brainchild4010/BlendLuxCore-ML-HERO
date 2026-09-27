@@ -214,7 +214,7 @@ class LuxCoreConfigPath(PropertyGroup):
     # path.russianroulette.depth
     rr_depth: IntProperty(
         name="Russian Roulette Depth",
-        default=64,
+        default=3,
         min=1,
         soft_max=128,
         description="Path depth at which Russian Roulette path termination starts"
@@ -222,7 +222,7 @@ class LuxCoreConfigPath(PropertyGroup):
     # path.russianroulette.cap
     rr_cap: FloatProperty(
         name="Russian Roulette Cap",
-        default=1.0,
+        default=0.5,
         min=0.0,
         max=1.0,
         description="Upper probability cap used by Russian Roulette path termination"
@@ -440,8 +440,108 @@ class LuxCoreConfig(PropertyGroup):
         description="Select the ML HERO wavelength sampling algorithm",
     )
 
+    ml_hero_wavelength_count: EnumProperty(
+        name="HERO Wavelengths",
+        items=[
+            ("1", "1", "Use 1 HERO wavelength per path", 0),
+            ("2", "2", "Use 2 HERO wavelengths per path", 1),
+            ("4", "4", "Use 4 HERO wavelengths per path", 2),
+            ("8", "8", "Use 8 HERO wavelengths per path", 3),
+        ],
+        default="1",
+        description="Number of HERO wavelengths evaluated per path",
+    )
+
+    ml_hero_glass_mode: EnumProperty(
+        name="Glass Mode",
+        items=[
+            ("0", "Current HERO", "Current per-lane HERO glass weighting", 0),
+            ("1", "Hero-only (Experimental)", "After dispersive specular transmission, keep only the HERO wavelength; experimental", 1),
+            ("2", "Lane-PDF (Experimental)", "Experimental per-lane glass weighting with event-PDF correction", 2),
+        ],
+        default="0",
+        description="ML HERO dispersive glass transport mode",
+    )
+
+    ml_hero_glass_per_lane_weight: BoolProperty(
+        name="Glass Per-Lane Weight",
+        default=True,
+        description=(
+            "Apply wavelength-specific Glass weights to each HERO lane. "
+            "Runtime replacement for ML_HERO_GLASS_PER_LANE_WEIGHT"
+        ),
+    )
+
+    ml_hero_quarter_cycling: BoolProperty(
+        name="Quarter Phase Cycling",
+        default=True,
+        description=(
+            "Enable lane-count-independent quarter-phase cycling for Sampling 1.0 HERO wavelengths. "
+            "Runtime replacement for ML_HERO_QUARTER_CYCLING"
+        ),
+    )
+
+    ml_hero_dual_termination_compensation: BoolProperty(
+        name="Dual-Termination Compensation",
+        default=False,
+        description=(
+            "Experimental BIDIR A/B switch: when both eye and light subpaths are HERO-only, "
+            "divide the ConnectVertices contribution by the HERO wavelength count"
+        ),
+    )
+
+    ml_hero_matte_basis_compensation: BoolProperty(
+        name="Matte Basis Compensation",
+        default=False,
+        description=(
+            "Experimental A/B switch for the HERO_75 measured Matte spectral RGB basis correction"
+        ),
+    )
+
+    ml_hero_generic_reflectance_compensation: BoolProperty(
+        name="Generic Reflectance Compensation (recommended)",
+        default=True,
+        description=(
+            "ML HERO reflectance correction for generic non-specular chromatic shaders. "
+            "Recommended for HERO; Standard LuxCore remains unchanged when ML HERO is disabled."
+        ),
+    )
+
+    ml_hero_glossy2_basis_compensation: BoolProperty(
+        name="Glossy2 Kd Basis Compensation",
+        default=True,
+        description=(
+            "Experimental ML HERO A/B correction for the Glossy2 Kd reflectance basis only. "
+            "Coating/Fresnel remain unchanged; Standard LuxCore is unaffected when ML HERO is disabled."
+        ),
+    )
+
+    ml_hero_diagnostics: BoolProperty(
+        name="Enable Diagnostics",
+        default=False,
+        description="Master switch. OFF skips ML HERO diagnostic logging, counters and analysis work for fastest normal renders.",
+    )
+
+    ml_hero_current_diagnostics: BoolProperty(
+        name="Current Diagnostics",
+        default=True,
+        description="Lightweight diagnostics for the current research phase: compact counters, path checks and current summaries.",
+    )
+
+    ml_hero_legacy_diagnostics: BoolProperty(
+        name="Legacy Diagnostics",
+        default=False,
+        description="Re-enable older research diagnostics kept for regression checks and investigating previously studied HERO behavior.",
+    )
+
+    ml_hero_heavy_diagnostics: BoolProperty(
+        name="Heavy Diagnostics",
+        default=False,
+        description="Enable expensive analysis such as dense 1 nm reconstruction and multi-trial simulations. Use only when needed.",
+    )
+
     ml_hero_enable: BoolProperty(
-        name="ML HERO Dispersion",
+        name="ML HERO Spectral",
         default=False,
         description=(
             "Global spectral dispersion mode. Disabled uses LuxCore Standard; "
@@ -545,14 +645,14 @@ class LuxCoreConfig(PropertyGroup):
     # BIDIR Russian Roulette
     bidir_rr_depth: IntProperty(
         name="Russian Roulette Depth",
-        default=64,
+        default=3,
         min=1,
         soft_max=128,
         description="Path depth at which Russian Roulette path termination starts"
     )
     bidir_rr_cap: FloatProperty(
         name="Russian Roulette Cap",
-        default=1.0,
+        default=0.5,
         min=0.0,
         max=1.0,
         description="Upper probability cap used by Russian Roulette path termination"
