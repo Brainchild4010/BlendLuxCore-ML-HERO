@@ -76,12 +76,6 @@ class LUXCORE_RENDER_PT_ml_hero(RenderButtonsPanel, Panel):
             layout.prop(config, "ml_hero_glass_per_lane_weight", text="Glass Per-Lane Weight")
             layout.prop(config, "ml_hero_quarter_cycling", text="Quarter Phase Cycling")
             layout.prop(config, "ml_hero_matte_basis_compensation", text="Matte Basis Compensation")
-            layout.prop(config, "ml_hero_generic_reflectance_compensation", text="Generic Reflectance Compensation (recommended)")
-            layout.prop(config, "ml_hero_glossy2_basis_compensation", text="Glossy2 Kd Basis Compensation")
-            if config.ml_hero_generic_reflectance_compensation:
-                layout.label(text="Generic Reflectance Compensation: recommended HERO color correction", icon="CHECKMARK")
-            if config.ml_hero_glossy2_basis_compensation:
-                layout.label(text="Glossy2 Kd Basis Compensation: recommended HERO color correction", icon="CHECKMARK")
             if config.ml_hero_matte_basis_compensation:
                 layout.label(text="Matte Basis Compensation: Experimental A/B", icon="EXPERIMENTAL")
             if config.ml_hero_glass_mode == "1":
@@ -93,49 +87,6 @@ class LUXCORE_RENDER_PT_ml_hero(RenderButtonsPanel, Panel):
             layout.label(text="Mode: ML HERO", icon="CHECKMARK")
         else:
             layout.label(text="Mode: LuxCore Standard")
-
-
-class LUXCORE_RENDER_PT_ml_hero_diagnostics(RenderButtonsPanel, Panel):
-    COMPAT_ENGINES = {"LUXCORE"}
-    bl_label = "ML HERO Diagnostics"
-    bl_order = 16
-    bl_options = {"DEFAULT_CLOSED"}
-
-    def draw(self, context):
-        layout = self.layout
-        config = context.scene.luxcore.config
-
-        layout.use_property_split = True
-        layout.use_property_decorate = False
-
-        layout.prop(config, "ml_hero_diagnostics", text="Enable Diagnostics")
-
-        col = layout.column()
-        col.enabled = config.ml_hero_diagnostics and config.ml_hero_enable
-        col.prop(config, "ml_hero_current_diagnostics", text="Current Diagnostics")
-        col.prop(config, "ml_hero_legacy_diagnostics", text="Legacy Diagnostics")
-        col.prop(config, "ml_hero_heavy_diagnostics", text="Heavy Diagnostics")
-
-        info = layout.box()
-        info.label(text="Current: lightweight active research checks", icon="INFO")
-        info.label(text="Legacy: older diagnostics kept for regression", icon="INFO")
-        info.label(text="Heavy: dense 1 nm / multi-trial analysis", icon="INFO")
-
-        if not config.ml_hero_enable:
-            layout.label(text="Diagnostics inactive: ML HERO is disabled", icon="INFO")
-        elif not config.ml_hero_diagnostics:
-            layout.label(text="Fast render mode: all diagnostics OFF", icon="CHECKMARK")
-        elif config.ml_hero_heavy_diagnostics:
-            layout.label(text="Heavy diagnostics ON - render may be much slower", icon="ERROR")
-        elif config.ml_hero_current_diagnostics and config.ml_hero_legacy_diagnostics:
-            layout.label(text="Current + Legacy diagnostics enabled", icon="INFO")
-        elif config.ml_hero_current_diagnostics:
-            layout.label(text="Current lightweight diagnostics enabled", icon="INFO")
-        elif config.ml_hero_legacy_diagnostics:
-            layout.label(text="Legacy diagnostics enabled", icon="INFO")
-        else:
-            layout.label(text="Master ON, but no diagnostic group selected", icon="INFO")
-
 
 
 

@@ -69,6 +69,18 @@ class LuxCoreImagepipelineTonemapper(
             "Non-linear tonemapper that adapts to the image brightness",
             2,
         ),
+        (
+            "TONEMAP_REINHARD_HERO_CLASSIC",
+            "Reinhard Hero Classic",
+            "ML HERO photographic Reinhard variant: Middle Grey (Key) and White Point",
+            3,
+        ),
+        (
+            "TONEMAP_REINHARD_HERO_EXPOSURE",
+            "Reinhard Hero Exposure",
+            "ML HERO Reinhard variant with explicit Exposure Bias in EV and Burn",
+            4,
+        ),
     ]
     type: EnumProperty(
         name="Tonemapper Type",
@@ -131,11 +143,28 @@ class LuxCoreImagepipelineTonemapper(
         description=REINHARD_BURN_DESC,
     )
 
+    reinhard_hero_key: FloatProperty(
+        name="Middle Grey (Key)", default=0.18, min=0.001, max=2.0, soft_max=0.5, precision=4,
+        description="Photographic Reinhard key value; 0.18 is classic middle grey",
+    )
+    reinhard_hero_whitepoint: FloatProperty(
+        name="White Point", default=4.0, min=0.01, max=100.0, soft_max=25.0, precision=3,
+        description="Scaled luminance that controls highlight roll-off",
+    )
+    reinhard_hero_exposure_bias: FloatProperty(
+        name="Exposure Bias (EV)", default=0.0, min=-10.0, max=10.0, soft_min=-5.0, soft_max=5.0, precision=2,
+        description="Exposure offset in stops; +1 EV doubles the pre-compression exposure",
+    )
+    reinhard_hero_burn: FloatProperty(
+        name="Burn", default=4.0, min=0.01, max=100.0, soft_max=25.0, precision=3,
+        description="Highlight roll-off / white-point control for Reinhard Hero Exposure",
+    )
+
     def is_automatic(self):
         if not self.enabled:
             return False
         autolinear = self.type == "TONEMAP_LINEAR" and self.use_autolinear
-        return autolinear or self.type == "TONEMAP_REINHARD02"
+        return autolinear or self.type in {"TONEMAP_REINHARD02", "TONEMAP_REINHARD_HERO_CLASSIC", "TONEMAP_REINHARD_HERO_EXPOSURE"}
 
 
 class LuxCoreImagepipelineBloom(

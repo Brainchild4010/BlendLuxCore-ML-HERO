@@ -133,6 +133,12 @@ def convert_tonemapper(definitions, index, tonemapper):
         definitions[str(index) + ".prescale"] = tonemapper.reinhard_prescale
         definitions[str(index) + ".postscale"] = tonemapper.reinhard_postscale
         definitions[str(index) + ".burn"] = tonemapper.reinhard_burn
+    elif tonemapper.type == "TONEMAP_REINHARD_HERO_CLASSIC":
+        definitions[str(index) + ".key"] = tonemapper.reinhard_hero_key
+        definitions[str(index) + ".whitepoint"] = tonemapper.reinhard_hero_whitepoint
+    elif tonemapper.type == "TONEMAP_REINHARD_HERO_EXPOSURE":
+        definitions[str(index) + ".exposurebias"] = tonemapper.reinhard_hero_exposure_bias
+        definitions[str(index) + ".burn"] = tonemapper.reinhard_hero_burn
     elif tonemapper.type == "TONEMAP_LUXLINEAR":
         definitions[str(index) + ".fstop"] = tonemapper.fstop
         definitions[str(index) + ".exposure"] = tonemapper.exposure

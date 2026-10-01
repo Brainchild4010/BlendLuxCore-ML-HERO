@@ -236,13 +236,28 @@ class LUXCORE_CAMERA_PT_image_pipeline_tonemapper(CameraButtonsPanel, Panel):
             col.prop(tonemapper, "exposure")
             col.prop(tonemapper, "sensitivity")
         elif tonemapper.type == "TONEMAP_REINHARD02":
-            col = layout.column(align=True)            
+            col = layout.column(align=True)
             col.prop(tonemapper, "reinhard_prescale")
             col.prop(tonemapper, "reinhard_postscale")
             col.prop(tonemapper, "reinhard_burn")
+        elif tonemapper.type == "TONEMAP_REINHARD_HERO_CLASSIC":
+            col = layout.column(align=True)
+            col.prop(tonemapper, "reinhard_hero_key")
+            col.prop(tonemapper, "reinhard_hero_whitepoint")
+        elif tonemapper.type == "TONEMAP_REINHARD_HERO_EXPOSURE":
+            col = layout.column(align=True)
+            col.prop(tonemapper, "reinhard_hero_exposure_bias")
+            col.prop(tonemapper, "reinhard_hero_burn")
 
         if len(context.scene.view_layers) > 1 and tonemapper.is_automatic():
-            name = "Auto" if tonemapper.type == "TONEMAP_LINEAR" else "Reinhard"
+            if tonemapper.type == "TONEMAP_LINEAR":
+                name = "Auto"
+            elif tonemapper.type == "TONEMAP_REINHARD_HERO_CLASSIC":
+                name = "Reinhard Hero Classic"
+            elif tonemapper.type == "TONEMAP_REINHARD_HERO_EXPOSURE":
+                name = "Reinhard Hero Exposure"
+            else:
+                name = "Reinhard"
             msg = name + " and multiple renderlayers will cause brightness difference!"
             col = layout.column(align=True)
             col.label(text=msg, icon=icons.WARNING)

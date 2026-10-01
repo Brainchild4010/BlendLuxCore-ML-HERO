@@ -476,7 +476,7 @@ class LuxCoreConfig(PropertyGroup):
         name="Quarter Phase Cycling",
         default=True,
         description=(
-            "Enable lane-count-independent quarter-phase cycling for Sampling 1.0 HERO wavelengths. "
+            "Enable quarter-phase cycling for Sampling 1.0 with 8 HERO wavelengths. "
             "Runtime replacement for ML_HERO_QUARTER_CYCLING"
         ),
     )
@@ -496,48 +496,6 @@ class LuxCoreConfig(PropertyGroup):
         description=(
             "Experimental A/B switch for the HERO_75 measured Matte spectral RGB basis correction"
         ),
-    )
-
-    ml_hero_generic_reflectance_compensation: BoolProperty(
-        name="Generic Reflectance Compensation (recommended)",
-        default=True,
-        description=(
-            "ML HERO reflectance correction for generic non-specular chromatic shaders. "
-            "Recommended for HERO; Standard LuxCore remains unchanged when ML HERO is disabled."
-        ),
-    )
-
-    ml_hero_glossy2_basis_compensation: BoolProperty(
-        name="Glossy2 Kd Basis Compensation",
-        default=True,
-        description=(
-            "Experimental ML HERO A/B correction for the Glossy2 Kd reflectance basis only. "
-            "Coating/Fresnel remain unchanged; Standard LuxCore is unaffected when ML HERO is disabled."
-        ),
-    )
-
-    ml_hero_diagnostics: BoolProperty(
-        name="Enable Diagnostics",
-        default=False,
-        description="Master switch. OFF skips ML HERO diagnostic logging, counters and analysis work for fastest normal renders.",
-    )
-
-    ml_hero_current_diagnostics: BoolProperty(
-        name="Current Diagnostics",
-        default=True,
-        description="Lightweight diagnostics for the current research phase: compact counters, path checks and current summaries.",
-    )
-
-    ml_hero_legacy_diagnostics: BoolProperty(
-        name="Legacy Diagnostics",
-        default=False,
-        description="Re-enable older research diagnostics kept for regression checks and investigating previously studied HERO behavior.",
-    )
-
-    ml_hero_heavy_diagnostics: BoolProperty(
-        name="Heavy Diagnostics",
-        default=False,
-        description="Enable expensive analysis such as dense 1 nm reconstruction and multi-trial simulations. Use only when needed.",
     )
 
     ml_hero_enable: BoolProperty(

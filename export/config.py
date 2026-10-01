@@ -97,12 +97,6 @@ def convert(exporter, scene, context=None, engine=None):
         definitions["path.mlhero.quartercycling"] = config.ml_hero_quarter_cycling
         definitions["path.mlhero.dualterminationcompensation"] = config.ml_hero_dual_termination_compensation
         definitions["path.mlhero.mattebasiscompensation"] = config.ml_hero_matte_basis_compensation
-        definitions["path.mlhero.genericreflectancecompensation"] = config.ml_hero_generic_reflectance_compensation
-        definitions["path.mlhero.glossy2basiscompensation"] = config.ml_hero_glossy2_basis_compensation
-        definitions["path.mlhero.diagnostics"] = config.ml_hero_diagnostics
-        definitions["path.mlhero.currentdiagnostics"] = config.ml_hero_current_diagnostics
-        definitions["path.mlhero.legacydiagnostics"] = config.ml_hero_legacy_diagnostics
-        definitions["path.mlhero.heavydiagnostics"] = config.ml_hero_heavy_diagnostics
 
         if preferences.film_device not in {"", "none"}:
             definitions["film.opencl.enable"] = True
