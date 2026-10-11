@@ -13,7 +13,7 @@ type = "add-on"  # Supported types: "add-on", "theme"
 # I.e. MAJOR.MINOR.PATCH
 # E.g.: "2.9.4": major: 2; minor: 9; patch: 3.
 # or for pre-release versions: "2.9.4-alpha.1": major: 2; minor: 9; patch: 3; pre-release: alpha.1
-version = "2.11.0"
+version = "2.11.1"
 
 # Optional: link to documentation, support, source files, etc
 website = "https://luxcorerender.org"
@@ -22,7 +22,7 @@ website = "https://luxcorerender.org"
 # https://docs.blender.org/manual/en/dev/advanced/extensions/tags.html
 tags = ["Render"]
 
-blender_version_min = "4.2.0"
+blender_version_min = "4.5.0"
 # # Optional: Blender version that the extension does not support, earlier versions are supported.
 # # This can be omitted and defined later on the extensions platform if an issue is found.
 # blender_version_max = "5.1.0"
