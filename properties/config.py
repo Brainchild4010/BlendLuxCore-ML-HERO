@@ -461,9 +461,8 @@ class LuxCoreConfig(PropertyGroup):
     ml_hero_glass_mode: EnumProperty(
         name="Glass Mode",
         items=[
-            ("0", "Current HERO", "Current per-lane HERO glass weighting", 0),
-            ("1", "Hero-only (Experimental)", "After dispersive specular transmission, keep only the HERO wavelength; experimental", 1),
-            ("2", "Lane-PDF (Experimental)", "Experimental per-lane glass weighting with event-PDF correction", 2),
+            ("0", "Standard Glass", "Established HERO glass transport (former mode 0)", 0),
+            ("1", "Experimental Glass", "Legacy experimental BIDIR mode-1 compensation", 1),
         ],
         default="0",
         description="ML HERO dispersive glass transport mode",

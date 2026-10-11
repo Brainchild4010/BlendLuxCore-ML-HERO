@@ -107,7 +107,7 @@ def convert(exporter, scene, context=None, engine=None):
         )
         definitions["path.mlhero.samplingmode"] = int(config.ml_hero_sampling_mode)
         definitions["path.mlhero.wavelengthcount"] = int(config.ml_hero_wavelength_count)
-        definitions["path.mlhero.glassmode"] = int(config.ml_hero_glass_mode)
+        definitions["path.mlhero.glassmode"] = 1 if config.ml_hero_glass_mode == "1" else 0
         definitions["path.mlhero.roughglass.fresnelimportance"] = bool(
             config.ml_hero_enable and config.ml_hero_roughglass_fresnel_importance
         )

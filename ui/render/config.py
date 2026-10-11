@@ -86,9 +86,9 @@ class LUXCORE_RENDER_PT_ml_hero(RenderButtonsPanel, Panel):
             if config.ml_hero_matte_basis_compensation:
                 layout.label(text="Matte Basis Compensation: Experimental A/B", icon="EXPERIMENTAL")
             layout.prop(config, "ml_hero_dual_termination_compensation", text="Dual-Termination Compensation")
-            layout.label(text="Dual-Termination Compensation: BIDIR, all Glass Modes", icon="EXPERIMENTAL")
+            layout.label(text="Dual-Termination Compensation: BIDIR spectral connections", icon="EXPERIMENTAL")
 
-            if config.ml_hero_glass_mode in {"1", "2"}:
+            if config.ml_hero_glass_mode == "1":
                 layout.label(text="Glass Mode: Experimental", icon="INFO")
             layout.label(text="Mode: ML HERO", icon="CHECKMARK")
         else:
