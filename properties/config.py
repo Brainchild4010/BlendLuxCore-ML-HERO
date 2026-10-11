@@ -452,6 +452,12 @@ class LuxCoreConfig(PropertyGroup):
         description="Number of HERO wavelengths evaluated per path",
     )
 
+    ml_hero_roughglass_fresnel_importance: BoolProperty(
+        name="RoughGlass Fresnel Importance",
+        default=False,
+        description="Experimental CPU PATH/BIDIR RoughGlass Fresnel-weighted reflection/transmission sampling; off keeps legacy 50:50",
+    )
+
     ml_hero_glass_mode: EnumProperty(
         name="Glass Mode",
         items=[
@@ -476,7 +482,7 @@ class LuxCoreConfig(PropertyGroup):
         name="Quarter Phase Cycling",
         default=True,
         description=(
-            "Enable quarter-phase cycling for Sampling 1.0 with 8 HERO wavelengths. "
+            "Enable lane-count-independent quarter-phase cycling for Sampling 1.0 HERO wavelengths. "
             "Runtime replacement for ML_HERO_QUARTER_CYCLING"
         ),
     )
@@ -485,8 +491,9 @@ class LuxCoreConfig(PropertyGroup):
         name="Dual-Termination Compensation",
         default=False,
         description=(
-            "Experimental BIDIR A/B switch: when both eye and light subpaths are HERO-only, "
-            "divide the ConnectVertices contribution by the HERO wavelength count"
+            "Experimental BIDIR A/B switch for all Glass Modes (0, 1 and 2): "
+            "when both spectral subpaths carry the same HERO-only packet scale, "
+            "divide their ConnectVertices contribution by the HERO wavelength count once"
         ),
     )
 
@@ -496,6 +503,48 @@ class LuxCoreConfig(PropertyGroup):
         description=(
             "Experimental A/B switch for the HERO_75 measured Matte spectral RGB basis correction"
         ),
+    )
+
+    ml_hero_generic_reflectance_compensation: BoolProperty(
+        name="Generic Reflectance Compensation (recommended)",
+        default=True,
+        description=(
+            "ML HERO reflectance correction for generic non-specular chromatic shaders. "
+            "Recommended for HERO; Standard LuxCore remains unchanged when ML HERO is disabled."
+        ),
+    )
+
+    ml_hero_glossy2_basis_compensation: BoolProperty(
+        name="Glossy2 Kd Basis Compensation",
+        default=True,
+        description=(
+            "Experimental ML HERO A/B correction for the Glossy2 Kd reflectance basis only. "
+            "Coating/Fresnel remain unchanged; Standard LuxCore is unaffected when ML HERO is disabled."
+        ),
+    )
+
+    ml_hero_diagnostics: BoolProperty(
+        name="Enable Diagnostics",
+        default=False,
+        description="Master switch for CPU diagnostic logging, including with ML HERO Spectral OFF. Some spectral probes still require HERO ON.",
+    )
+
+    ml_hero_current_diagnostics: BoolProperty(
+        name="Current Diagnostics",
+        default=True,
+        description="Lightweight diagnostics for the current research phase: compact counters, path checks and current summaries.",
+    )
+
+    ml_hero_legacy_diagnostics: BoolProperty(
+        name="Legacy Diagnostics",
+        default=False,
+        description="Re-enable older research diagnostics kept for regression checks and investigating previously studied HERO behavior.",
+    )
+
+    ml_hero_heavy_diagnostics: BoolProperty(
+        name="Heavy Diagnostics",
+        default=False,
+        description="Enable expensive analysis such as dense 1 nm reconstruction and multi-trial simulations. Use only when needed.",
     )
 
     ml_hero_enable: BoolProperty(
@@ -600,7 +649,17 @@ class LuxCoreConfig(PropertyGroup):
     # TODO description
     bidir_path_maxdepth: IntProperty(name="Eye Depth", default=10, min=1, soft_max=16)
 
-    # BIDIR Russian Roulette
+    # Spectral RR controls are shown for all engines; current transport is CPU BIDIR and CPU PATH.
+    ml_hero_rr_material_experiment: BoolProperty(
+        name="Spectral Material RR (Experimental)",
+        default=False,
+        description="Use accumulated spectral throughput with retained eta compensation for Matte, Metal2 and Glossy2 on CPU Bidir and CPU Path camera paths. Requires multiple HERO wavelengths. Off uses previous RR"
+    )
+    ml_hero_rr_glass_eta_experiment: BoolProperty(
+        name="Spectral Glass RR (Experimental)",
+        default=False,
+        description="Use accumulated spectral throughput with eta compensation for ideal Glass on CPU Bidir and CPU Path camera paths. Requires ML HERO with multiple wavelengths. Off uses the previous Russian Roulette method"
+    )
     bidir_rr_depth: IntProperty(
         name="Russian Roulette Depth",
         default=3,

@@ -46,7 +46,7 @@ platforms = ["windows-x64", "macos-arm64", "linux-x64", "macos-x64", "windows-ar
 #
 # DO NOT ALTER following line, it will be replaced by actual wheel list at runtime
 # For developers: If you intend to use BLC in Editable Mode, please run 'debug_helpers/setup-wheels-filter.sh' beforehands
-wheels = ["wheels/nvidia_cuda_nvrtc_cu12-12.8.93-py3-none-win_amd64.whl", "wheels/pyluxcore-2.11.1-cp313-cp313-win_amd64.whl"]
+wheels = ["wheels/nvidia_cuda_nvrtc_cu12-12.8.93-py3-none-win_amd64.whl", "wheels/pyluxcore-2.11.2-cp313-cp313-win_amd64.whl"]
 
 # # Optional: add-ons can list which resources they will require:
 # # * files (for access of any filesystem operations)
