@@ -25,7 +25,9 @@ Experimental and under active development.
 This repository is not intended as a drop-in replacement for the official BlendLuxCore release.
 Some features may be incomplete, renderer-specific, or subject to change.
 
-Base version: BlendLuxCore 2.11.0
+Base version: BlendLuxCore 2.11.1
+LuxCore core: 2.11.2 (ML HERO)
+Current HERO phase: 15gj
 
 <p align="center">
 <h1 align="center">BlendLuxCore</h1>
