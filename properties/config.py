@@ -468,6 +468,12 @@ class LuxCoreConfig(PropertyGroup):
         description="ML HERO dispersive glass transport mode",
     )
 
+    ml_hero_splitting_enable: BoolProperty(
+        name="Spectral Wavelength Splitting (Experimental)",
+        default=False,
+        description="15gl: experimental configuration handshake only; two-ray splitting is NOT active yet. The renderer writes SPLIT_CONFIG to diagnostics; transport remains identical",
+    )
+
     ml_hero_glass_per_lane_weight: BoolProperty(
         name="Glass Per-Lane Weight",
         default=True,
@@ -682,6 +688,7 @@ class LuxCoreConfig(PropertyGroup):
         ("GAUSSIAN", "Gaussian", "Blurry", 2),
         ("BOX", "Box", "", 3),
         ("SINC", "Sinc", "", 4),
+        ("LANCZOS", "Lanczos", "Windowed sinc reconstruction (Lanczos-3 by default)", 6),
         ("CATMULLROM", "Catmull-Rom", "", 5),
     ]
     filter: EnumProperty(name="Filter", items=filters, default="BLACKMANHARRIS",
@@ -691,6 +698,10 @@ class LuxCoreConfig(PropertyGroup):
     gaussian_alpha: FloatProperty(name="Gaussian Filter Alpha", default=2, min=0.1, max=10,
                                    description="Gaussian rate of falloff. Lower values give blurrier images")
     sinc_tau: FloatProperty(name="Sinc Filter Tau", default=3.0, min=0.01, max=8)
+
+    lanczos_radius_x: FloatProperty(name="Lanczos Radius X", default=3.0, min=0.5, max=16.0, description="Horizontal kernel support radius in pixels", subtype="PIXEL")
+    lanczos_radius_y: FloatProperty(name="Lanczos Radius Y", default=3.0, min=0.5, max=16.0, description="Vertical kernel support radius in pixels", subtype="PIXEL")
+    lanczos_lobes: FloatProperty(name="Lanczos Lobes", default=3.0, min=1.0, max=16.0, description="Windowed sinc lobes (3 for classical Lanczos-3)")
 
     # Light strategy
     light_strategy_items = [

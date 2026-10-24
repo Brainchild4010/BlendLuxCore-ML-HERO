@@ -183,7 +183,12 @@ class LUXCORE_RENDER_PT_sampling_pixel_filtering(RenderButtonsPanel, Panel):
 
         col = layout.column(align=True)
         col.active = config.filter_enabled and not filter_forced_disabled
-        col.prop(config, "filter_width")
+        if config.filter == "LANCZOS":
+            col.prop(config, "lanczos_radius_x")
+            col.prop(config, "lanczos_radius_y")
+            col.prop(config, "lanczos_lobes")
+        else:
+            col.prop(config, "filter_width")
         if config.filter == "GAUSSIAN":
             layout.prop(config, "gaussian_alpha")
         elif config.filter == "SINC":

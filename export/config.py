@@ -108,6 +108,12 @@ def convert(exporter, scene, context=None, engine=None):
         definitions["path.mlhero.samplingmode"] = int(config.ml_hero_sampling_mode)
         definitions["path.mlhero.wavelengthcount"] = int(config.ml_hero_wavelength_count)
         definitions["path.mlhero.glassmode"] = 1 if config.ml_hero_glass_mode == "1" else 0
+        definitions["path.mlhero.splitting.enable"] = bool(
+            config.ml_hero_enable
+            and luxcore_engine == "BIDIRCPU"
+            and int(config.ml_hero_wavelength_count) > 1
+            and config.ml_hero_splitting_enable
+        )
         definitions["path.mlhero.roughglass.fresnelimportance"] = bool(
             config.ml_hero_enable and config.ml_hero_roughglass_fresnel_importance
         )
@@ -150,6 +156,12 @@ def convert(exporter, scene, context=None, engine=None):
             definitions["film.filter.gaussian.alpha"] = config.gaussian_alpha
         elif config.filter == "SINC":
             definitions["film.filter.sinc.tau"] = config.sinc_tau
+
+        elif config.filter == "LANCZOS":
+            definitions["film.filter.width"] = config.lanczos_radius_x
+            definitions["film.filter.xwidth"] = config.lanczos_radius_x
+            definitions["film.filter.ywidth"] = config.lanczos_radius_y
+            definitions["film.filter.lanczos.lobes"] = config.lanczos_lobes
 
         use_filesaver = utils.using_filesaver(context, scene)
 

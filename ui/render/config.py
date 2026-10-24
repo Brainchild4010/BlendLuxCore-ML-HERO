@@ -73,6 +73,9 @@ class LUXCORE_RENDER_PT_ml_hero(RenderButtonsPanel, Panel):
             layout.prop(config, "ml_hero_sampling_mode", text="HERO Sampling")
             layout.prop(config, "ml_hero_wavelength_count", text="HERO Wavelengths")
             layout.prop(config, "ml_hero_glass_mode", text="Glass Mode")
+            layout.prop(config, "ml_hero_splitting_enable", text="Spectral Wavelength Splitting (Experimental)")
+            if config.ml_hero_splitting_enable:
+                layout.label(text="15gl preparation only: no extra rays yet", icon="INFO")
             layout.prop(config, "ml_hero_roughglass_fresnel_importance", text="RoughGlass Fresnel Importance (CPU)")
             layout.prop(config, "ml_hero_glass_per_lane_weight", text="Glass Per-Lane Weight")
             layout.prop(config, "ml_hero_quarter_cycling", text="Quarter Phase Cycling")

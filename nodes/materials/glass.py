@@ -118,12 +118,13 @@ class LuxCoreNodeMatGlass(LuxCoreNodeMaterial, bpy.types.Node):
                                       description=THIN_FILM_DESCRIPTION,
                                       update=ThinFilmCoating.toggle)
     ml_fine_roughglass: BoolProperty(
-        name="ML Fine RoughGlass",
+        name="GGX-VNDF Sampling",
         default=False,
         description=(
-            "Use ML Fine RoughGlass sampling for very small roughness values. "
-            "Enables VNDF sampling and a smooth near-delta transition. "
-            "Disable to use the original LuxCore RoughGlass roughness behaviour"
+            "Use isotropic GGX visible-normal microfacet sampling for RoughGlass; "
+            "off uses legacy Schlick NDF sampling. "
+            "Anisotropic roughness currently uses the legacy sampler in both modes. "
+            "No automatic ideal-glass mixing is applied"
         ),
         update=utils_node.force_viewport_update
     )
