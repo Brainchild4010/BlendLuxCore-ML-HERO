@@ -30,6 +30,7 @@ ENGINE_TO_STR = {
 SAMPLER_TO_STR = {
     "RANDOM": "Random",
     "SOBOL": "Sobol",
+    "ZSOBOL": "ZSobol",
     "METROPOLIS": "Metropolis",
     "RTPATHCPUSAMPLER": "RT Path Sampler",
     "TILEPATHSAMPLER": "Tile Path Sampler",

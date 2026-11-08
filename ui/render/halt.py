@@ -52,7 +52,8 @@ def draw(layout, context, halt):
 
             if not config.tile.multipass_enable and halt.samples > min_samples:
                 layout.label(text="Samples halt condition overriden by disabled multipass", icon=icons.INFO)
-        elif config.get_sampler() in {"SOBOL", "RANDOM"} and config.using_out_of_core() or config.sampler_pattern == "CACHE_FRIENDLY":
+        elif (config.get_sampler() in {"SOBOL", "ZSOBOL", "RANDOM"}
+              and (config.using_out_of_core() or config.sampler_pattern == "CACHE_FRIENDLY")):
             if halt.samples % samples_per_pass != 0:
                 layout.label(text="Should be a multiple of %d" % samples_per_pass, icon=icons.WARNING)
 

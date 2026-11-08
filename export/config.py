@@ -379,10 +379,11 @@ def _convert_final_engine(scene, definitions, config):
     else:
         sampler = config.get_sampler()
 
-    if sampler in {"SOBOL", "RANDOM"}:
+    if sampler in {"SOBOL", "ZSOBOL", "RANDOM"}:
         sampler_type = sampler.lower()
 
-        # Adaptive sampling
+        # Adaptive sampling. ZSobol uses the same film-noise estimator as
+        # Sobol, while its accepted per-pixel pass remains the Z-order index.
         adaptive_strength = config.sobol_adaptive_strength
         if adaptive_strength > 0:
             definitions["film.noiseestimation.warmup"] = (

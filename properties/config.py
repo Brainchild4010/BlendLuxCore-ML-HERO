@@ -27,6 +27,10 @@ BIDIR_DESC = (
 )
 
 SOBOL_DESC = "Optimized random noise pattern. Supports noise-aware adaptive sampling"
+ZSOBOL_DESC = (
+    "PBRT-v4-style Z-order Sobol sampler for CPU rendering. "
+    "Supports noise-aware adaptive sampling while preserving each pixel's ZSobol sample prefix"
+)
 METROPOLIS_DESC = "Sampler that focuses samples on brighter parts of the image. Not noise-aware. Suited for rendering caustics"
 RANDOM_DESC = (
     "Random noise pattern. Supports noise-aware adaptive sampling."
@@ -564,8 +568,9 @@ class LuxCoreConfig(PropertyGroup):
     # Only available when tiled rendering is off (because it uses a special tiled sampler)
     samplers = [
         ("SOBOL", "Sobol", SOBOL_DESC, 0),
-        ("METROPOLIS", "Metropolis", METROPOLIS_DESC, 1),
-        ("RANDOM", "Random", RANDOM_DESC, 2),
+        ("ZSOBOL", "ZSobol (Experimental)", ZSOBOL_DESC, 1),
+        ("METROPOLIS", "Metropolis", METROPOLIS_DESC, 2),
+        ("RANDOM", "Random", RANDOM_DESC, 3),
     ]
     sampler: EnumProperty(name="Sampler", items=samplers, default="SOBOL")
     
