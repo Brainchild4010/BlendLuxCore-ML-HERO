@@ -90,6 +90,11 @@ def convert(exporter, scene, context=None, engine=None):
 
         # ML HERO global spectral mode
         definitions["path.mlhero.enable"] = config.ml_hero_enable
+        definitions["path.mlhero.hybridmis.rawexperiment"] = bool(
+            luxcore_engine == "PATHCPU"
+            and definitions.get("path.hybridbackforward.enable", False)
+            and config.ml_hero_hybrid_mis_raw_experiment
+        )
         definitions["path.mlhero.rr.materialexperiment"] = bool(
             (luxcore_engine == "BIDIRCPU" or
                 (luxcore_engine == "PATHCPU" and not definitions.get("path.hybridbackforward.enable", False)))
@@ -104,6 +109,20 @@ def convert(exporter, scene, context=None, engine=None):
             and config.ml_hero_enable
             and int(config.ml_hero_wavelength_count) > 1
             and config.ml_hero_rr_glass_eta_experiment
+        )
+        lighttracing_glass_rr = bool(
+            luxcore_engine == "PATHCPU"
+            and definitions.get("path.hybridbackforward.enable", False)
+            and config.ml_hero_enable
+            and int(config.ml_hero_wavelength_count) > 1
+            and config.ml_hero_rr_glass_lighttracing_enable
+        )
+        definitions["path.mlhero.rr.glass.lighttracing.enable"] = lighttracing_glass_rr
+        definitions["path.mlhero.rr.glass.lighttracing.depth"] = int(
+            config.ml_hero_rr_glass_lighttracing_depth
+        )
+        definitions["path.mlhero.rr.glass.lighttracing.cap"] = float(
+            config.ml_hero_rr_glass_lighttracing_cap
         )
         definitions["path.mlhero.samplingmode"] = int(config.ml_hero_sampling_mode)
         definitions["path.mlhero.wavelengthcount"] = int(config.ml_hero_wavelength_count)

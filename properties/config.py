@@ -28,7 +28,7 @@ BIDIR_DESC = (
 
 SOBOL_DESC = "Optimized random noise pattern. Supports noise-aware adaptive sampling"
 ZSOBOL_DESC = (
-    "PBRT-v4-style Z-order Sobol sampler for CPU rendering. "
+    "PBRT-v4-style Z-order Sobol sampler for CPU and CUDA/OpenCL rendering. "
     "Supports noise-aware adaptive sampling while preserving each pixel's ZSobol sample prefix"
 )
 METROPOLIS_DESC = "Sampler that focuses samples on brighter parts of the image. Not noise-aware. Suited for rendering caustics"
@@ -538,6 +538,16 @@ class LuxCoreConfig(PropertyGroup):
         description="Master switch for CPU diagnostic logging, including with ML HERO Spectral OFF. Some spectral probes still require HERO ON.",
     )
 
+    ml_hero_hybrid_mis_raw_experiment: BoolProperty(
+        name="Hybrid MIS Raw PDF (Experimental)",
+        default=False,
+        description=(
+            "A/B experiment for CPU PATH with Add Light Tracing: use the raw BSDF directional "
+            "PDF in direct-light MIS, matching the existing direct-hit PDF convention. "
+            "Off keeps the previous hybrid behavior. Requires a renderer with phase 15px support."
+        ),
+    )
+
     ml_hero_current_diagnostics: BoolProperty(
         name="Current Diagnostics",
         default=True,
@@ -576,7 +586,8 @@ class LuxCoreConfig(PropertyGroup):
     
     samplers_gpu = [
         ("SOBOL", "Sobol", "Best suited sampler for the GPU. " + SOBOL_DESC, 0),
-        ("RANDOM", "Random", RANDOM_DESC, 1),
+        ("ZSOBOL", "ZSobol (CUDA Experimental)", ZSOBOL_DESC, 1),
+        ("RANDOM", "Random", RANDOM_DESC, 2),
     ]
     sampler_gpu: EnumProperty(name="Sampler", items=samplers_gpu, default="SOBOL")
     
@@ -666,9 +677,29 @@ class LuxCoreConfig(PropertyGroup):
         description="Use accumulated spectral throughput with retained eta compensation for Matte, Metal2 and Glossy2 on CPU Bidir and CPU Path camera paths. Requires multiple HERO wavelengths. Off uses previous RR"
     )
     ml_hero_rr_glass_eta_experiment: BoolProperty(
-        name="Spectral Glass RR (Experimental)",
+        name="Camera / Eye Paths",
         default=False,
         description="Use accumulated spectral throughput with eta compensation for ideal Glass on CPU Bidir and CPU Path camera paths. Requires ML HERO with multiple wavelengths. Off uses the previous Russian Roulette method"
+    )
+    ml_hero_rr_glass_lighttracing_enable: BoolProperty(
+        name="Light-Tracing Paths",
+        default=False,
+        description="Conservative spectral Russian Roulette for Glass and Rough Glass on CPU PATH light-tracing paths. Uses relative spectral throughput and the maximum RGB component. Off preserves LuxCore's previous behavior exactly"
+    )
+    ml_hero_rr_glass_lighttracing_depth: IntProperty(
+        name="Light Start Depth",
+        default=8,
+        min=1,
+        soft_max=128,
+        description="Total light-path depth at which Spectral Glass RR may start"
+    )
+    ml_hero_rr_glass_lighttracing_cap: FloatProperty(
+        name="Light Minimum Survival",
+        default=0.5,
+        min=0.05,
+        max=1.0,
+        subtype="FACTOR",
+        description="Minimum survival probability for Spectral Glass RR on light-tracing paths. Higher values are safer but terminate fewer paths"
     )
     bidir_rr_depth: IntProperty(
         name="Russian Roulette Depth",

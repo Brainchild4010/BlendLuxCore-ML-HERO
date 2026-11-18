@@ -68,7 +68,10 @@ class LUXCORE_RENDER_PT_sampling(RenderButtonsPanel, Panel):
                 col.prop(config, "sampler_pattern")
 
                 if sampler == "ZSOBOL":
-                    layout.label(text="Experimental CPU ZSobol sampler", icon=icons.INFO)
+                    if config.device == "OCL":
+                        layout.label(text="Experimental CUDA/OpenCL ZSobol sampler", icon=icons.INFO)
+                    else:
+                        layout.label(text="Experimental CPU ZSobol sampler", icon=icons.INFO)
                 
                 if config.device == "OCL":
                     col = layout.column()

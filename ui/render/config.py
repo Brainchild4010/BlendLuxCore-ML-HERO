@@ -204,15 +204,38 @@ class LUXCORE_RENDER_PT_lightpaths_bounces(RenderButtonsPanel, Panel):
             and config.ml_hero_enable
             and int(config.ml_hero_wavelength_count) > 1
         )
-        row = col.row()
+        glass_box = col.box()
+        glass_box.label(text="Spectral Glass RR (Experimental)")
+        row = glass_box.row()
         row.enabled = spectral_rr_enabled
-        row.prop(config, "ml_hero_rr_glass_eta_experiment",
-                 text="Spectral Glass RR (Experimental)")
+        row.prop(config, "ml_hero_rr_glass_eta_experiment")
+
+        supports_lighttracing_glass_rr = (
+            config.engine == "PATH"
+            and config.device == "CPU"
+            and not config.use_tiles
+            and config.path.hybridbackforward_enable
+            and config.ml_hero_enable
+            and int(config.ml_hero_wavelength_count) > 1
+        )
+        row = glass_box.row()
+        row.enabled = supports_lighttracing_glass_rr
+        row.prop(config, "ml_hero_rr_glass_lighttracing_enable")
+        settings = glass_box.column(align=True)
+        settings.enabled = (
+            supports_lighttracing_glass_rr
+            and config.ml_hero_rr_glass_lighttracing_enable
+        )
+        settings.prop(config, "ml_hero_rr_glass_lighttracing_depth")
+        settings.prop(config, "ml_hero_rr_glass_lighttracing_cap")
+        if config.path.hybridbackforward_enable and not supports_lighttracing_glass_rr:
+            glass_box.label(text="Light-Tracing RR requires CPU PATH and multiple wavelengths", icon="INFO")
+
         row = col.row()
         row.enabled = spectral_rr_enabled
         row.prop(config, "ml_hero_rr_material_experiment",
                  text="Spectral Material RR (Experimental)")
-        if not supports_spectral_rr:
+        if not supports_spectral_rr and not config.path.hybridbackforward_enable:
             col.label(text="Not available in this engine yet", icon="INFO")
 
 
@@ -259,6 +282,12 @@ class LUXCORE_RENDER_PT_add_light_tracing(RenderButtonsPanel, Panel):
         else:
             layout.prop(config.path, "hybridbackforward_lightpartition_opencl")
         layout.prop(config.path, "hybridbackforward_glossinessthresh")
+
+        row = layout.row()
+        row.enabled = config.device == "CPU"
+        row.prop(config, "ml_hero_hybrid_mis_raw_experiment")
+        if config.ml_hero_hybrid_mis_raw_experiment and config.device == "CPU":
+            layout.label(text="Experimental A/B: raw BSDF PDF in direct-light MIS", icon="EXPERIMENTAL")
 
         if self.error(context):
             layout.label(
